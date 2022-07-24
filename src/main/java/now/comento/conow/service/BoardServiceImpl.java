@@ -7,7 +7,9 @@ import now.comento.conow.web.dto.BoardDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +25,23 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional(readOnly = true)
     public List<BoardDto> findAll() {
-        List<Board> list = boardRepository.findAll();
-
-
-
-
-        return null;
+        return boardRepository.findAll().stream()
+                .map(BoardDto::new)
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public BoardDto findById(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
+        return new BoardDto(board);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        boardRepository.delete(board);
+    }
+
 }

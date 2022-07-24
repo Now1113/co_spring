@@ -8,5 +8,28 @@
 
 <a th:href="@{/boards/post}">글쓰기</a>
 
+<table border="1em">
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- CONTENTS !-->
+    <tr th:each="board : ${boardList}">
+        <td>
+            <span th:text="${board.id}"></span>
+        </td>
+        <td>
+            <a th:href="@{'/boards/' + ${board.id}}">
+                <span th:text="${board.title}"></span>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

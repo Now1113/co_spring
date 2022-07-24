@@ -11,12 +11,8 @@ public interface BoardService {
 
     List<BoardDto> findAll();
 
-    default BoardDto entityToDto(Board board) {
-        BoardDto dto = BoardDto.builder()
-                .content(board.getContent())
-                .title(board.getTitle())
-                .build();
+    BoardDto findById(Long id);
 
-        return dto;
-    }
+    void delete(Long id);
+
 }

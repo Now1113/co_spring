@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <a th:href="@{/boards}">뒤로가기</a>
+
+    <table border="1em">
+        <thead>
+        <tr>
+            <th class="one wide">글제목</th>
+            <th class="ten wide">내용</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!-- CONTENTS !-->
+            <td>
+                <span th:text="${boards.title}"></span>
+            </td>
+            <td>
+                    <span th:text="${boards.content}"></span>
+                </a>
+            </td>
+        </tbody>
+
+        <!-- 수정/삭제 -->
+        <div>
+            <a th:href="@{'/borads/edit/' + ${boards.id}}">
+                <button>수정</button>
+            </a>
+
+            <form id="delete-form" th:action="@{'/boards/' + ${boards.id}}" th:method="delete">
+                <input type="submit" value="Delete"></form>
+        </div>
+
+    </table>
+
+</body>
+</html>
