@@ -52,7 +52,6 @@ public class BoardController {
                        BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("===error===");
             return "/boards/post";
         }
 

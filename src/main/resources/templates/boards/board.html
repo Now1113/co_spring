@@ -60,9 +60,6 @@
                 <a th:href="@{'/boards/edit/' + ${boards.id}}">
                     <button>수정</button>
                 </a>
-
-                <form id="delete-form" th:action="@{'/boards/' + ${boards.id}}" th:method="delete">
-                    <input type="submit" value="Delete"></form>
             </div>
 
             <div class="ui error message"></div>

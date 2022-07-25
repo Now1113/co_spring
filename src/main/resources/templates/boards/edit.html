@@ -56,9 +56,13 @@
 
             </form>
 
+            <form id="delete-form" th:action="@{'/boards/' + ${boards.id}}" th:method="delete">
+                <input type="submit" value="Delete"></form>
+
             <button class="ui fluid large teal submit button">
                 <a th:href="@{/boards}">홈으로</a>
             </button>
+
 
             <div class="ui error message"></div>
 
