@@ -1,13 +1,15 @@
-package now.comento.conow.service;
+package now.comento.conow.service.board;
 
 import lombok.RequiredArgsConstructor;
-import now.comento.conow.domain.Board;
-import now.comento.conow.domain.BoardRepository;
-import now.comento.conow.web.dto.BoardDto;
+import now.comento.conow.domain.board.Board;
+import now.comento.conow.domain.board.BoardRepository;
+import now.comento.conow.web.dto.board.BoardListResponseDto;
+import now.comento.conow.web.dto.board.BoardResponseDto;
+import now.comento.conow.web.dto.board.BoardSaveRequestDto;
+import now.comento.conow.web.dto.board.BoardUpdateRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,30 +20,42 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
 
     @Override
-    public Long save(BoardDto dto) {
+    @Transactional
+    public Long save(BoardSaveRequestDto dto) {
         return boardRepository.save(dto.toEntity()).getId();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BoardDto> findAll() {
+    public List<BoardListResponseDto> findAll() {
         return boardRepository.findAll().stream()
-                .map(BoardDto::new)
+                .map(BoardListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public BoardDto findById(Long id) {
+    public BoardResponseDto findById(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
-        return new BoardDto(board);
+        return new BoardResponseDto(board);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         boardRepository.delete(board);
+    }
+
+    @Override
+    @Transactional
+    public Long update(Long id, BoardUpdateRequestDto dto) {
+        Board board = boardRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        board.update(dto.getTitle(), dto.getContent());
+
+        return id;
     }
 
 }

@@ -1,4 +1,4 @@
-package now.comento.conow.domain;
+package now.comento.conow.domain.board;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

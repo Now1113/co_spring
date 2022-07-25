@@ -1,35 +1,107 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판 페이지</title>
+    <!-- css 가져오기 -->
+    <link rel="stylesheet" type="text/css" href="/js/semantic.min.css">
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 1000px;
+        }
+
+        .view_btn {
+            cursor: pointer;
+        }
+
+    </style>
 </head>
+
 <body>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            게시판 페이지
+        </h2>
+        <div class="ui large form">
+            <div class="ui stacked segment">
+                <a href="" th:href="@{/boards/post}"> <button class="ui fluid large teal submit button">게시글 작성하기</button></a>
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>제목</th>
+                        <th>등록자</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
 
-<a th:href="@{/boards/post}">글쓰기</a>
+                    <tbody>
+                    <!-- CONTENTS !-->
+                    <tr th:each="board : ${boardList}">
+                        <td>
+                            <span th:text="${board.id}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/boards/' + ${board.id}}">
+                                <span th:text="${board.title}"></span>
+                            </a>
+                        </td>
+                        <td>
 
-<table border="1em">
-    <thead>
-    <tr>
-        <th class="one wide">번호</th>
-        <th class="ten wide">글제목</th>
-    </tr>
-    </thead>
+                        </td>
+                        <td>
+                            <span th:text="${board.modifiedDate}"></span>
+                        </td>
 
-    <tbody>
-    <!-- CONTENTS !-->
-    <tr th:each="board : ${boardList}">
-        <td>
-            <span th:text="${board.id}"></span>
-        </td>
-        <td>
-            <a th:href="@{'/boards/' + ${board.id}}">
-                <span th:text="${board.title}"></span>
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="ui error message"></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="ui modal" id='view_modal'>
+    <i class="close">x</i>
+    <div class="header" id="b_title">
+
+    </div>
+    <div class="content">
+        <div class="description">
+            <p style = "text-align: right" id = "b_review"></p>
+            <div id = 'b_content'></div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            닫기
+        </div>
+    </div>
+</div>
+
+<!-- js 가져오기 -->
+<script src="/js/jquery3.3.1.min.js"></script>
+<script src="/js/semantic.min.js"></script>
 
 </body>
+
 </html>

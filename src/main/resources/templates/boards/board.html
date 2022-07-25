@@ -1,43 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시글 등록</title>
+    <!-- css 가져오기 -->
+    <link rel="stylesheet" type="text/css" href="/js/semantic.min.css">
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+    </style>
 </head>
+
 <body>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            게시글 정보
+        </h2>
+        <div class="ui large form">
 
-    <a th:href="@{/boards}">뒤로가기</a>
+            <form th:action="@{'/boards/post'}" th:method="post">
 
-    <table border="1em">
-        <thead>
-        <tr>
-            <th class="one wide">글제목</th>
-            <th class="ten wide">내용</th>
-        </tr>
-        </thead>
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div>
+                            <span th:text="${boards.title}" readonly></span>
+                        </div>
+                    </div>
 
-        <tbody>
-        <!-- CONTENTS !-->
-            <td>
-                <span th:text="${boards.title}"></span>
-            </td>
-            <td>
-                    <span th:text="${boards.content}"></span>
+                    <tr>
+                        <td colspan="2" height=400>
+                          <textarea placeholder="내용을 입력하세요." th:text="*{boards.content}"  style="width: 100%; height: 100%" disabled>
+                          </textarea>
+                        </td>
+                    </tr>
+                </div>
+            </form>
+
+            <a th:href="@{/boards}">뒤로가기</a>
+
+            <!-- 수정/삭제 -->
+            <div>
+                <a th:href="@{'/boards/edit/' + ${boards.id}}">
+                    <button>수정</button>
                 </a>
-            </td>
-        </tbody>
 
-        <!-- 수정/삭제 -->
-        <div>
-            <a th:href="@{'/borads/edit/' + ${boards.id}}">
-                <button>수정</button>
-            </a>
+                <form id="delete-form" th:action="@{'/boards/' + ${boards.id}}" th:method="delete">
+                    <input type="submit" value="Delete"></form>
+            </div>
 
-            <form id="delete-form" th:action="@{'/boards/' + ${boards.id}}" th:method="delete">
-                <input type="submit" value="Delete"></form>
+            <div class="ui error message"></div>
+
         </div>
-
-    </table>
-
+    </div>
+</div>
+<!-- js 가져오기 -->
+<script src="/js/jquery3.3.1.min.js"></script>
+<script src="/js/semantic.min.js"></script>
 </body>
+
 </html>
