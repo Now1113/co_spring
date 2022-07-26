@@ -5,13 +5,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
 @Data
-@NoArgsConstructor
 public class PageDto {
 
-    //몇 개의 페이지로 구성할건지
-    private final int PAGENUM = 5;
-    //페이지당 몇 개 표시할건지
-    private int pageSize;
+    private final int PAGENUM = 10; // 페이지 몇개로 구성할건지
+    private int pageSize; // 페이지당 몇개 표시할건지
     private int startPage;
     private int endPage;
     private int curPage;
@@ -19,22 +16,26 @@ public class PageDto {
 
     private long total;
 
+    public PageDto() {
+    }
+
     public PageDto(long total, Pageable pageable) {
         this.total = total;
         this.curPage = pageable.getPageNumber();
         this.pageSize = pageable.getPageSize();
 
-        this.endPage = (int) (Math.ceil((curPage+1) / 10)) * 10;
-        this.startPage = this.endPage - (PAGENUM - 1);
+        //endPage를 10단위로 세팅, view는 1부터 시작이므로 curPage+1
+        this.endPage = (int) (Math.ceil((curPage+1) / 10.0)) * 10;
+        this.startPage = this.endPage - (PAGENUM - 1); // 10단위 endPage에서 9를 빼면 시작페이지 구할 수 있음
 
         int realEnd = (int) (Math.ceil((total * 1.0) / pageSize));
 
-        if (realEnd < this.endPage) {
+        if (realEnd < this.endPage) { // 페이지가 10단위로 나누어 떨어지지 않을때 real endPage
             this.endPage = realEnd;
         }
 
-        this.prev = (curPage + 1) > 1;
-        this.next = (curPage + 1) < realEnd;
+        this.prev = (curPage+1) > 1; // view에서는 1부터 시작이므로
+        this.next = (curPage+1) < realEnd; // view에서는 1부터 시작이므로
     }
-
 }
+
