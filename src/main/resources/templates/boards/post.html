@@ -40,19 +40,20 @@
                 <div class="ui stacked segment">
                     <div class="field">
                         <div>
-                            <input type="text"  th:field="*{title}"  placeholder="제목을 입력하세요" autofocus autocomplete="off">
+                            <input type="text"  th:field="*{title}"  placeholder="제목을 입력하세요" autofocus autocomplete="off"
+                                th:errorclass="field-error">
+                            <div class="field-error" th:errors="*{title}"></div>
                         </div>
                     </div>
 
                     <tr>
                         <td colspan="2" height=400>
-                            <textarea placeholder="내용을 입력하세요." th:field="*{content}"  style="width: 100%; height: 100%"></textarea>
+                            <textarea placeholder="내용을 입력하세요."  th:errorclass="field-error" th:field="*{content}"  style="width: 100%; height: 100%"></textarea>
+                            <div class="field-error" th:errors="*{content}"></div>
                         </td>
                     </tr>
 
                     <button class="ui fluid large teal submit button">등록</button>
-
-
 
                 </div>
 

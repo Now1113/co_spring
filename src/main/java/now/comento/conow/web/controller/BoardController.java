@@ -2,6 +2,7 @@ package now.comento.conow.web.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import now.comento.conow.domain.board.Board;
 import now.comento.conow.service.board.BoardServiceImpl;
 import now.comento.conow.web.dto.board.BoardListResponseDto;
@@ -10,7 +11,9 @@ import now.comento.conow.web.dto.board.BoardSaveRequestDto;
 import now.comento.conow.web.dto.board.BoardUpdateRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/boards")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardServiceImpl boardService;
@@ -52,6 +56,7 @@ public class BoardController {
                        BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
             return "/boards/post";
         }
 
@@ -70,14 +75,24 @@ public class BoardController {
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         BoardResponseDto dto = boardService.findById(id);
-        model.addAttribute("boards", dto);
+        model.addAttribute("dto", dto);
         return "/boards/edit";
     }
 
     //업데이트
     @PutMapping("/edit/{id}")
-    public String editBoard(@PathVariable Long id, BoardUpdateRequestDto dto) {
+    public String editBoard(@PathVariable Long id, @Validated @ModelAttribute("dto") BoardUpdateRequestDto dto,
+                            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            if (dto.getTitle() == null) {
+                bindingResult.addError(new FieldError("dto", "title","제목은 공백X"));
+            }
+            return "redirect:/boards/edit/" + id;
+        }
+
         boardService.update(id, dto);
-        return "redirect:/boards";
+        return "redirect:/boards/" + id;
     }
 }
