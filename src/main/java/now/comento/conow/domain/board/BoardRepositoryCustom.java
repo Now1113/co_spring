@@ -1,11 +1,13 @@
 package now.comento.conow.domain.board;
 
+import now.comento.conow.web.dto.board.BoardListResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface BoardRepositoryCustom {
 
-    List<Board> findAllPageSort(Pageable pageable);
+    Page<BoardListResponseDto> findAllPageSort(Pageable pageable);
 
 }

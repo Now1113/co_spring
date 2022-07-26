@@ -4,20 +4,23 @@ package now.comento.conow.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import now.comento.conow.domain.board.Board;
+import now.comento.conow.domain.board.BoardRepositoryImpl;
+import now.comento.conow.web.dto.page.PageDto;
 import now.comento.conow.service.board.BoardServiceImpl;
 import now.comento.conow.web.dto.board.BoardListResponseDto;
 import now.comento.conow.web.dto.board.BoardResponseDto;
 import now.comento.conow.web.dto.board.BoardSaveRequestDto;
 import now.comento.conow.web.dto.board.BoardUpdateRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/boards")
@@ -26,12 +29,15 @@ import java.util.List;
 public class BoardController {
 
     private final BoardServiceImpl boardService;
+    private final BoardRepositoryImpl boardRepository;
 
     //전체보기
     @GetMapping
-    public String findAll(Model model) {
-        List<BoardListResponseDto> boardList = boardService.findAll();
+    public String findAll(Model model, @PageableDefault(size = 5, sort="id", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+        Page<BoardListResponseDto> boardList = boardRepository.findAllPageSort(pageable);
         model.addAttribute("boardList", boardList);
+        model.addAttribute("page", new PageDto(boardList.getTotalElements(), pageable));
         return "/boards/list";
     }
 

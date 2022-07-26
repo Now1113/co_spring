@@ -4,6 +4,7 @@ import now.comento.conow.web.dto.board.BoardListResponseDto;
 import now.comento.conow.web.dto.board.BoardResponseDto;
 import now.comento.conow.web.dto.board.BoardSaveRequestDto;
 import now.comento.conow.web.dto.board.BoardUpdateRequestDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
